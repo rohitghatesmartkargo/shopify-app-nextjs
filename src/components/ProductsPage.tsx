@@ -1,21 +1,8 @@
 // pages/products.tsx
-import { GetServerSideProps } from "next";
-import { shopifyFetch } from "../lib/shopify";
+import { Product } from "@/types/Product";
+import Image from "next/image";
 import Link from "next/link";
 
-type Product = {
-  id: string;
-  title: string;
-  description: string;
-  handle: string;
-  images: { edges: { node: { src: string; altText: string } }[] };
-  priceRange: {
-    minVariantPrice: {
-      amount: string;
-      currencyCode: string;
-    };
-  };
-};
 
 type ProductsPageProps = {
   products: Product[];
@@ -28,13 +15,13 @@ export default function ProductsPage({ products }: ProductsPageProps) {
       <h1 className="text-3xl font-bold mb-6">Products</h1>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {products.map((product) => (
-          <Link  key={product.id} href={`/products/${product.handle}`}>
+          <Link key={product.id} href={`/products/${product.handle}`}>
             <div
               key={product.id}
               className="border rounded-xl p-4 shadow bg-white w-64 h-96 flex flex-col"
             >
               {product.images.edges[0] && (
-                <img
+                <Image
                   src={product.images.edges[0].node.src}
                   alt={product.images.edges[0].node.altText || product.title}
                   className="w-full h-56 object-cover rounded"

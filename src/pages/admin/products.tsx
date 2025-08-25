@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import AdminLayout from "@/common/AdminLayout";
+import { Product } from "@/types/Product";
+import Image from "next/image";
+
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -17,6 +20,7 @@ export default function ProductsPage() {
     try {
       const res = await fetch("/api/add-product", { method: "POST" });
       const data = await res.json();
+      console.log(data)
       setLoading(false);
     } catch (error) {
       console.error("Error adding product", error);
@@ -27,12 +31,12 @@ export default function ProductsPage() {
   const columns = [
     {
       name: "Product",
-      selector: (row: any) => row.title,
+      selector: (row: Product) => row.title,
       sortable: true,
-      cell: (row: any) => (
+      cell: (row: Product) => (
         <div className="flex items-center space-x-3">
           {row.images && (
-            <img
+            <Image
               src={row.images.edges[0]?.node.src ?? ""}
               alt={row.title}
               className="w-10 h-10 object-cover rounded"
@@ -44,8 +48,8 @@ export default function ProductsPage() {
     },
     {
       name: "Status",
-      selector: (row: any) => row.status,
-      cell: (row: any) => (
+      selector: (row: Product) => row.status,
+      cell: (row: Product) => (
         <span
           className={`px-2 py-1 rounded text-xs font-semibold ${
             row.status === "Active"
@@ -59,11 +63,11 @@ export default function ProductsPage() {
     },
     {
       name: "Inventory",
-      selector: (row: any) => row.totalInventory,
+      selector: (row: Product) => row.totalInventory,
     },
     {
       name: "Category",
-      selector: (row: any) => row.category || "Uncategorized",
+      selector: (row: Product) => row.category || "Uncategorized",
     },
   ];
 

@@ -1,11 +1,11 @@
 import AdminLayout from "@/common/AdminLayout";
+import { Order } from "@/types/Order";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
 import DataTable from "react-data-table-component";
 
 export default function AdminOrders() {
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     fetch("/api/orders")
@@ -16,28 +16,28 @@ export default function AdminOrders() {
   const columns = [
     {
       name: "Order",
-      selector: (row: any) => row.name,
+      selector: (row: Order) => row.name,
       sortable: true,
     },
     {
       name: "Date",
-      selector: (row: any) => new Date(row.createdAt).toLocaleString(),
+      selector: (row: Order) => new Date(row.createdAt).toLocaleString(),
       sortable: true,
     },
     {
       name: "Customer",
-      selector: (row: any) => row.customer?.displayName || "No customer",
+      selector: (row: Order) => row.customer?.displayName || "No customer",
     },
     {
       name: "Total",
-      selector: (row: any) =>
+      selector: (row: Order) =>
         `${row.totalPriceSet.shopMoney.amount} ${row.totalPriceSet.shopMoney.currencyCode}`,
       sortable: true,
     },
     {
       name: "Payment status",
-      selector: (row: any) => row.displayFinancialStatus || "Pending",
-      cell: (row: any) => (
+      selector: (row: Order) => row.displayFinancialStatus || "Pending",
+      cell: (row: Order) => (
         <span className="px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-xs">
           {row.displayFinancialStatus || "Pending"}
         </span>
@@ -45,8 +45,8 @@ export default function AdminOrders() {
     },
     {
       name: "Fulfillment status",
-      selector: (row: any) => row.displayFulfillmentStatus || "Unfulfilled",
-      cell: (row: any) => (
+      selector: (row: Order) => row.displayFulfillmentStatus || "Unfulfilled",
+      cell: (row: Order) => (
         <span className="px-2 py-1 rounded bg-gray-100 text-gray-700 text-xs">
           {row.displayFulfillmentStatus || "Unfulfilled"}
         </span>
@@ -54,7 +54,7 @@ export default function AdminOrders() {
     },
     {
       name: "Items",
-      selector: (row: any) => `${row.lineItems.edges.length} items`,
+      selector: (row: Order) => `${row.lineItems.edges.length} items`,
     },
   ];
 

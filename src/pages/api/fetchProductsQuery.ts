@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { shopifyAdminFetch } from "../../lib/shopifyAdmin";
+import { Product } from "@/types/Product";
 
 export default async function handler(
   req: NextApiRequest,
@@ -38,8 +39,14 @@ export default async function handler(
 
   try {
     const data = await shopifyAdminFetch(query);
-    res.status(200).json(data.products.edges.map((e: any) => e.node));
-  } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    res
+      .status(200)
+      .json(data.products.edges.map((e: { node: Product }) => e.node));
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: "Unknown error" });
+    }
   }
 }

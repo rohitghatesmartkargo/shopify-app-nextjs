@@ -1,10 +1,37 @@
 import { GetServerSideProps } from "next";
 import { client } from "../../lib/shopifyClient";
 import { useState } from "react";
+import Image from "next/image";
 
-export default function ProductPage({ product }: { product: any }) {
+type Product = {
+  id: string;
+  title: string;
+  status: string;
+  totalInventory: number;
+  handle: string;
+  description: string;
+  images: [{ src: string; altText?: string | null }];
+  variants: [
+    {
+      id: string;
+      price: {
+        amount: number;
+        currencyCode: string;
+      };
+    }
+  ];
+  category?: string;
+  priceRange: {
+    minVariantPrice: {
+      amount: number;
+      currencyCode: string;
+    };
+  };
+};
+
+export default function ProductPage({ product }: { product: Product }) {
   const [loading, setLoading] = useState(false);
-  console.log(product)
+  console.log(product);
 
   const addToCart = async () => {
     try {
@@ -40,7 +67,7 @@ export default function ProductPage({ product }: { product: any }) {
       <h1 className="text-3xl font-bold">{product.title}</h1>
 
       {product.images[0] && (
-        <img
+        <Image
           src={product.images[0].src}
           alt={product.images[0].altText || product.title}
           className="mt-4 w-full max-w-md rounded"
@@ -48,7 +75,8 @@ export default function ProductPage({ product }: { product: any }) {
       )}
 
       <p className="mt-4 text-lg font-semibold">
-        {product.variants[0].price.amount} {product.variants[0].price.currencyCode}
+        {product.variants[0].price.amount}{" "}
+        {product.variants[0].price.currencyCode}
       </p>
 
       <p className="mt-2 text-gray-200">{product.description}</p>

@@ -2,7 +2,7 @@
 const endpoint = process.env.SHOPIFY_ADMIN_API_URL!;
 const adminToken = process.env.SHOPIFY_ADMIN_API_TOKEN!;
 
-export async function shopifyAdminFetch(query: string, variables: any = {}) {
+export async function shopifyAdminFetch(query: string, variables = {}) {
   const response = await fetch(endpoint, {
     method: "POST",
     headers: {
