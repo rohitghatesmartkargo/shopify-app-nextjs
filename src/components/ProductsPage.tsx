@@ -22,6 +22,8 @@ export default function ProductsPage({ products }: ProductsPageProps) {
             >
               {product.images.edges[0] && (
                 <Image
+                  width={100}
+                  height={100}
                   src={product.images.edges[0].node.src}
                   alt={product.images.edges[0].node.altText || product.title}
                   className="w-full h-56 object-cover rounded"

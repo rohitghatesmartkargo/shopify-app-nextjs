@@ -68,6 +68,8 @@ export default function ProductPage({ product }: { product: Product }) {
 
       {product.images[0] && (
         <Image
+          width={100}
+          height={100}
           src={product.images[0].src}
           alt={product.images[0].altText || product.title}
           className="mt-4 w-full max-w-md rounded"

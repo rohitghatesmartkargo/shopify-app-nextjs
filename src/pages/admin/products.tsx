@@ -37,6 +37,8 @@ export default function ProductsPage() {
         <div className="flex items-center space-x-3">
           {row.images && (
             <Image
+              width={100}
+              height={100}
               src={row.images.edges[0]?.node.src ?? ""}
               alt={row.title}
               className="w-10 h-10 object-cover rounded"
